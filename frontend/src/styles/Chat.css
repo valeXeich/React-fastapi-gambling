@@ -1,0 +1,25 @@
+.text-chat {
+    color: #A4A4B2;
+    margin-top: -10px;
+    margin-left: 38px;
+}
+
+.chat {
+    background-color: #222225;
+    border-radius: 14px;
+}
+
+.chat-title {
+    color: #E6E6EE;
+}
+
+.form-chat {
+    width: 335px;
+    background-color: #2a2a30;
+    border: none;
+    color: #fff;
+}
+
+.btn-chat-color {
+    background-color: #E1675A;
+}

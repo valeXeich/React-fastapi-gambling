@@ -1,0 +1,16 @@
+.boll {
+    display: flex;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+.red {
+    background-color: #d4594c;
+}
+
+.black {
+    background-color: #393939;
+}
