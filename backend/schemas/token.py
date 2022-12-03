@@ -9,3 +9,6 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Optional[str] = None
+
+    class Config:
+        orm_mode = True

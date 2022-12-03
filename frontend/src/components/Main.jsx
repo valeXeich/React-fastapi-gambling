@@ -19,7 +19,7 @@ const Main = () => {
                 </div>
                 <div className="col-8 roll">
                     <div className="progress mt-3"></div>
-                    <Roulette/>
+                    {/* <Roulette/> */}
                     <Bolls/>
                     <BetPanel/>
                     <Bets/>

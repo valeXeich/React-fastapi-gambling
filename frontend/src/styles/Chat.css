@@ -14,12 +14,16 @@
 }
 
 .form-chat {
-    width: 335px;
+    width: 91%;
     background-color: #2a2a30;
     border: none;
     color: #fff;
 }
 
 .btn-chat-color {
+    background-color: #E1675A;
+}
+
+.btn-chat-color:hover {
     background-color: #E1675A;
 }

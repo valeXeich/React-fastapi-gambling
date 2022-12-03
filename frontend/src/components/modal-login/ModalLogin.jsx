@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from "axios";
 import './ModalLogin.css';
+import { AuthContext } from '../../contex';
 
 const ModalLogin = () => {
 
+    const {isAuth, setIsAuth} = useContext(AuthContext);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -17,8 +19,20 @@ const ModalLogin = () => {
         username: username,
         password: password
       }
-      const response = await axios.post('http://127.0.0.1:8000/login', formData, headers)
-      console.log(response.data)
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/login', formData, headers)
+        const token = response.data.access_token
+        localStorage.setItem("auth_token", token)
+        setIsAuth(true)
+        console.log(response.data)
+      } catch(e) {
+        const status = e.response.status
+        if (status === 404) {
+          console.log('user not defind')
+        } else if (status === 400) {
+          console.log('bad password')
+        }
+      }
     }
 
     return (
@@ -59,7 +73,7 @@ const ModalLogin = () => {
               </form>
               <div className="row">
                 <div className="col-12">
-                  <button onClick={login} type="button" className="btn btn-outline-success login-btn">Login</button>
+                  <button onClick={login} type="button" className="btn btn-outline-success login-btn" aria-label="Close">Login</button>
                 </div>
               </div>
               <div className="row mt-2">

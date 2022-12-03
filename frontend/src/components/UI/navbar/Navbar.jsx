@@ -8,6 +8,16 @@ const Navbar = () => {
 
     const {isAuth, setIsAuth} = useContext(AuthContext);
 
+    const get_user = async () => {
+        const response = await axios.get('http://127.0.0.1:8000/user')
+        console.log(response)
+    }
+
+    const logout = () => {
+        localStorage.removeItem("auth_token");
+        setIsAuth(false)
+    }
+
     return (
         <nav className="navbar navbar-expand-lg">
             <div className="container-fluid">
@@ -29,7 +39,7 @@ const Navbar = () => {
                 </ul>
             </div>
             {isAuth
-                ? <button className="btn btn-outline-danger text-uppercase">logout</button>
+                ? <button onClick={logout} className="btn btn-outline-danger text-uppercase">logout</button>
                 : <button data-bs-toggle="modal" data-bs-target="#loginModal" className="btn btn-outline-danger text-uppercase">sign in</button>
             }
             <ModalLogin/>
