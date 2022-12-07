@@ -4,12 +4,15 @@ from database import get_session
 from schemas import users, token
 from auth.password_hash import hash_pass
 from auth.oauth2 import get_current_user
-from service.users import create_users
+from service.users import create_users, get_user
 
 router = APIRouter()
 
 @router.post('/user', response_model=users.UserShow, status_code=status.HTTP_201_CREATED)
 async def create_user(request: users.User, session: AsyncSession = Depends(get_session)):
+    user = await get_user(request.username, session)
+    if user:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, 'This user is busy')
     hash_password = hash_pass(request.password)
     user = await create_users(request.username, hash_password, session)
     return user

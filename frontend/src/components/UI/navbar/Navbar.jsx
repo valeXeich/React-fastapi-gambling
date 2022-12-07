@@ -2,21 +2,12 @@ import React from 'react';
 import { useContext } from 'react';
 import { AuthContext } from '../../../contex';
 import ModalLogin from '../../modal-login/ModalLogin';
+import RightPanel from '../right-panel/RightPanel';
 import './Navbar.css';
 
 const Navbar = () => {
 
     const {isAuth, setIsAuth} = useContext(AuthContext);
-
-    const get_user = async () => {
-        const response = await axios.get('http://127.0.0.1:8000/user')
-        console.log(response)
-    }
-
-    const logout = () => {
-        localStorage.removeItem("auth_token");
-        setIsAuth(false)
-    }
 
     return (
         <nav className="navbar navbar-expand-lg">
@@ -39,7 +30,7 @@ const Navbar = () => {
                 </ul>
             </div>
             {isAuth
-                ? <button onClick={logout} className="btn btn-outline-danger text-uppercase">logout</button>
+                ? <RightPanel/>
                 : <button data-bs-toggle="modal" data-bs-target="#loginModal" className="btn btn-outline-danger text-uppercase">sign in</button>
             }
             <ModalLogin/>

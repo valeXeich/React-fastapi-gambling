@@ -56,28 +56,29 @@ async def websocket_endpoint_chat(websocket: WebSocket, client_id: int):
         try:
             data = await websocket.receive_text()
             message = {'id': 1, 'username': 'valex', 'text': data}
+            print(message)
             await manager.broadcast(json.dumps(message))
         except WebSocketDisconnect:
             manager.disconnect(websocket)
             await manager.broadcast(json.dumps({'client_id': client_id}))
 
 
-@app.websocket('/roll')
-async def websocket_endpoint(websocket: WebSocket, client_id: int):
-    server_seed_bytes = secrets.token_bytes(4)
-    server_seed = sha256(server_seed_bytes).hexdigest()
-    public_seed = ''.join([str(random.randint(1, 39)) for _ in range(5)])
-    round_ = 1
-    hash_ = sha256(f'{server_seed}-{public_seed}-{round_}'.encode('utf-8')).hexdigest()
-    await manager.connect(websocket)
-    while True:
-        try:
-            round_ += 1
-            result = int(hash_[0:0 + 8], 16) % 15
-            data = await websocket.receive_text()
-            print(result)
-            print(data)
-            await websocket.send_json({'result': result})
-        except WebSocketDisconnect:
-            manager.disconnect(websocket)
-            await manager.broadcast(f"Client #{client_id} left the chat")
+# @app.websocket('/roll')
+# async def websocket_endpoint(websocket: WebSocket, client_id: int):
+#     server_seed_bytes = secrets.token_bytes(4)
+#     server_seed = sha256(server_seed_bytes).hexdigest()
+#     public_seed = ''.join([str(random.randint(1, 39)) for _ in range(5)])
+#     round_ = 1
+#     hash_ = sha256(f'{server_seed}-{public_seed}-{round_}'.encode('utf-8')).hexdigest()
+#     await manager.connect(websocket)
+#     while True:
+#         try:
+#             round_ += 1
+#             result = int(hash_[0:0 + 8], 16) % 15
+#             data = await websocket.receive_text()
+#             print(result)
+#             print(data)
+#             await websocket.send_json({'result': result})
+#         except WebSocketDisconnect:
+#             manager.disconnect(websocket)
+#             await manager.broadcast(f"Client #{client_id} left the chat")
