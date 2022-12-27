@@ -5,7 +5,7 @@ import AuthService from '../../API/AuthService';
 
 const ModalLogin = () => {
 
-    const {isAuth, setIsAuth} = useContext(AuthContext);
+    const {authData, setAuthData} = useContext(AuthContext);
     const [error, setError] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -20,13 +20,12 @@ const ModalLogin = () => {
         username: username,
         password: password
       }
-     const value = await AuthService.login(formData, headers)
-     setIsAuth(value.login);
+     const status = await AuthService.login(formData, headers, setAuthData)
      setUsername('');
      setPassword('');
-     if (value.status === 404) {
+     if (status === 404) {
       setError('User not found')
-     } else if (value.status === 400) {
+     } else if (status === 400) {
       setError('Incorrect username or password')
      }
     }

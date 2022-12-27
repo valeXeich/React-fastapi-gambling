@@ -6,6 +6,10 @@ class User(BaseModel):
     password: str
 
 
+class UserBalance(BaseModel):
+    balance: int
+
+
 class UserShow(BaseModel):
     username: str
 

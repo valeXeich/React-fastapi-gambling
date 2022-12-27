@@ -13,7 +13,7 @@ const Message = ({messages}) => {
                 alt=""
                 className="img-fluid rounded-circle"
                 />
-                <span className="name-color ms-1">{message.username}</span>
+                <span className="name-color ms-1">{message.username} {message.time}</span>
                 <p className="text-chat">{message.text}</p>
             </div>
         ))}

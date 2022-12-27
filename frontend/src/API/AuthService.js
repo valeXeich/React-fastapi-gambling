@@ -1,14 +1,18 @@
 import axios from "axios";
 
+
 export default class AuthService {
 
-    static async login(data, headers) {
+    static async login(data, headers, setAuth) {
         try {
             const response = await axios.post('http://127.0.0.1:8000/login', data, headers)
             const token = response.data.access_token
             localStorage.setItem("auth_token", token)
+            axios.defaults.headers.common["Authorization"] = 'Bearer ' + token;
+            const user = await this.getActiveUser()
+            setAuth({auth: true, user: user})
             console.log(response.data)
-            return {login: true, status: response.status}
+            return response.status
           } catch(e) {
             const status = e.response.status
             if (status === 404) {

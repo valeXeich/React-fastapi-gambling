@@ -1,53 +1,59 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useRef } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../contex";
 import '../styles/Chat.css';
 import Message from "./UI/message/Message";
 
 const Chat = () => {
 
-  const [chat, setChat] = useState('');
-
-  const [clienId, setClientId] = useState(Math.floor(new Date().getTime()/1000))
+  const {authData, setAuthData} = useContext(AuthContext);
 
   const [messages, setMessages] = useState([]);
+  const [chat, setChat] = useState('');
+  const socket = useRef();
 
-  const [websckt, setWebsckt] = useState();
+  const [chatError, setChatError] = useState('');
 
   useEffect(() => {
-    const ws = new WebSocket(`ws://localhost:8000/message/${clienId}`);
 
-    ws.onmessage = function(event) {
-        const message = JSON.parse(event.data)
-        console.log(message)
-        if (!message.cliend_id) {
-          
-        }
-        setMessages([...messages, message])
+    socket.current = new WebSocket(`ws://localhost:8000/message`)
 
-    }
+    socket.current.onopen = () => {
+      console.log('Connected')
+    };
 
-    setWebsckt(ws)
+    socket.current.onmessage = (event) => {
+      const message = JSON.parse(event.data)
+      setMessages((messages) => [...messages, message])
+    };
 
-    return () => ws.close()
+    socket.current.onclose = () => {
+      console.log('Socket closed')
+    };
 
-  }, [messages])
+    socket.current.onerror = () => {
+      console.log('Socket error')
+    };
 
-  // const ws = new WebSocket('ws://localhost:8000/message');
+    return () => socket.current.close();
+  }, [])
+  
 
-  // ws.onmessage = function(event) {
-  //   setMessages([...messages, JSON.parse(event.data)])
-  //   console.log(JSON.parse(event.data))
-  // }
 
-  function sendMessage() {
-    setChat('')
-    websckt.send(chat)
-    websckt.onmessage = (e) => {
-      const message = JSON.parse(e.data)
-      setMessages([...messages, message])
+  const sendMessage = async () => {
+    setChatError('');
+    if (authData.auth) {
+      const message = {
+        username: authData.user.username,
+        text: chat
+      }
+      socket.current.send(JSON.stringify(message));
+      setChat('');
+    } else {
+      setChatError('You must be logged in')
+      setChat('')
     }
   }
-
 
 
   return (
@@ -55,6 +61,11 @@ const Chat = () => {
       <h4 className="text-center chat-title">Chat</h4>
 
       <Message messages={messages}/>
+
+    {chatError
+      ? <p className='text-danger'>{chatError}</p>
+      : ''
+    }
 
       <div className="chat-submit d-flex d-flex justify-content-between">
         <input

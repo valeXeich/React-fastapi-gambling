@@ -7,7 +7,7 @@ import './Navbar.css';
 
 const Navbar = () => {
 
-    const {isAuth, setIsAuth} = useContext(AuthContext);
+    const {authData, setAuthData} = useContext(AuthContext);
 
     return (
         <nav className="navbar navbar-expand-lg">
@@ -29,7 +29,7 @@ const Navbar = () => {
                     </li>
                 </ul>
             </div>
-            {isAuth
+            {authData.auth
                 ? <RightPanel/>
                 : <button data-bs-toggle="modal" data-bs-target="#loginModal" className="btn btn-outline-danger text-uppercase">sign in</button>
             }

@@ -5,6 +5,7 @@ from schemas import users, token
 from auth.password_hash import hash_pass
 from auth.oauth2 import get_current_user
 from service.users import create_users, get_user
+from service.transactions import get_balance
 
 router = APIRouter()
 
@@ -17,8 +18,15 @@ async def create_user(request: users.User, session: AsyncSession = Depends(get_s
     user = await create_users(request.username, hash_password, session)
     return user
 
+
+@router.get('/user/balance', response_model=users.UserBalance)
+async def get_user_balance(current_user: token.TokenData = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
+    balance = get_balance(current_user.username, session)
+    return balance
+
 @router.get('/user', response_model=token.TokenData, status_code=status.HTTP_200_OK)
 async def get_current_active_user(current_user: token.TokenData = Depends(get_current_user)):
     # if current_user.disabled:
     #     raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
+

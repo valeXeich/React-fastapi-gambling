@@ -1,9 +1,10 @@
-import React from 'react';
 
-const Boll = () => {
+
+const Boll = ({number, color}) => {
+
     return (
-        <div className='boll red p-4 ms-1'>
-            9
+        <div style={color} className='boll p-4 ms-1'>
+            {number}
         </div>
     );
 };
