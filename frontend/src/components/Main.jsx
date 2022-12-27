@@ -56,8 +56,10 @@ const Main = () => {
     const socket = useRef()
 
   if (authData.auth) {
-    setBalance(UserService.getUserBalance())
+    UserService.getUserBalance(setBalance)
   }
+
+  console.log(authData)
 
   const setStop = () => {
     setSpin(false)
@@ -85,12 +87,19 @@ const Main = () => {
     const myTotalGreen = filterBets('green')
     const myTotalBlack = filterBets('black')
     const victoryColor = data[result].color
+    let totalLost = 0
     if (victoryColor === 'red') {
       setBalance(balance + (myTotalRed * 2))
+      totalLost = myTotalBlack + myTotalGreen
     } else if (victoryColor === 'green') {
       setBalance(balance + (myTotalGreen * 14))
+      totalLost = myTotalRed + myTotalBlack
     } else {
       setBalance(balance + (myTotalBlack * 2))
+      totalLost = myTotalRed + myTotalGreen
+    }
+    if (myTotalBlack || myTotalGreen || myTotalRed) {
+      console.log('bet')
     }
   }
 

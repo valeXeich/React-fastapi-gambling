@@ -1,4 +1,5 @@
 from sqlalchemy import Column, String, Integer, ForeignKey
+from sqlalchemy.orm import relationship
 from database import Base
 
 
@@ -8,6 +9,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
+    transaction = relationship("Transaction", back_populates="user")
 
 
 class Transaction(Base):
@@ -15,7 +17,8 @@ class Transaction(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     value = Column(Integer, nullable=False)
-    username = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship('User', back_populates="transaction")
 
 
 class Result(Base):

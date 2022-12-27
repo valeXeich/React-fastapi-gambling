@@ -21,12 +21,11 @@ async def create_user(request: users.User, session: AsyncSession = Depends(get_s
 
 @router.get('/user/balance', response_model=users.UserBalance)
 async def get_user_balance(current_user: token.TokenData = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
-    balance = get_balance(current_user.username, session)
+    balance = await get_balance(current_user.username, session)
     return balance
+
 
 @router.get('/user', response_model=token.TokenData, status_code=status.HTTP_200_OK)
 async def get_current_active_user(current_user: token.TokenData = Depends(get_current_user)):
-    # if current_user.disabled:
-    #     raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 

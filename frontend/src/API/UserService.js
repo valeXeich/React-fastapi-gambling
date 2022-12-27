@@ -8,9 +8,9 @@ export default class UserService {
         return response
     }
 
-    static async getUserBalance() {
+    static async getUserBalance(setBalance) {
         const response = await axios.get('http://127.0.0.1:8000/user/balance')
-        console.log(response, 'balance')
-        return response.data.balance
+        console.log(response.data.balance, 'balance')
+        setBalance(response.data.balance)
     }
 }
