@@ -3,18 +3,18 @@ import './Message.css'
 
 const Message = ({messages}) => {
     return (
-        <div>
+        <div className="messages">
         {messages.map((message, index) => (
             <div className="message" key={index}>
                 <img
                 src={`${process.env.PUBLIC_URL}/avatar.jpg`}
-                width="30"
-                height="30"
+                width="35"
+                height="35"
                 alt=""
                 className="img-fluid rounded-circle"
                 />
-                <span className="name-color ms-1">{message.username} {message.time}</span>
-                <p className="text-chat">{message.text}</p>
+                <span className="name-color ms-2">{message.username} {message.time}</span>
+                <p className="text-chat">{message.message}</p>
             </div>
         ))}
         </div>

@@ -4,20 +4,7 @@ import './Roulette.css'
 
 const Roulette = ({result, data, spin, setStop}) => {
 
-  console.log(spin)
-
-  // const handleSpinClick = () => {
-  //   socket.current.send('start');
-  //   setMustSpin(true);
-  // };
-    
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //       setMustSpin(true);
-  //   }, 25000);
-  
-  //   return () => clearInterval(interval);
-  // }, []);
+  console.log(spin, 'spin')
 
     return (
         <div className="roulette mb-2">

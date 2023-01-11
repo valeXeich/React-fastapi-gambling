@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../../../contex';
 import ModalLogin from '../../modal-login/ModalLogin';
 import RightPanel from '../right-panel/RightPanel';
+import { Link } from "react-router-dom";
 import './Navbar.css';
 
 const Navbar = () => {
@@ -16,13 +17,10 @@ const Navbar = () => {
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav p-3">
                     <li className="nav-item">
-                        <span className="nav-link ms-3" aria-current="page">Home</span >
+                        <Link to="/" className="nav-link ms-3">Home</Link>
                     </li>
                     <li className="nav-item">
-                        <span  className="nav-link ms-3">Deposit</span >
-                    </li>
-                    <li className="nav-item">
-                        <span  className="nav-link ms-3">Withdraw</span >
+                        <Link to="/deposit-withdraw" className="nav-link ms-3">Deposit/Withdraw</Link>
                     </li>
                     <li className="nav-item">
                         <span  className="nav-link ms-3">Contacts</span >

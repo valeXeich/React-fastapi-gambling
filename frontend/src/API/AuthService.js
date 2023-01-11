@@ -12,7 +12,7 @@ export default class AuthService {
             const user = await this.getActiveUser()
             setAuth({auth: true, user: user})
             console.log(response.data)
-            return response.status
+            return {login: true}
           } catch(e) {
             const status = e.response.status
             if (status === 404) {
@@ -20,7 +20,7 @@ export default class AuthService {
             } else if (status === 400) {
               console.log('bad password')
             }
-            return {login: false, status: status}
+            return {login: false, message: e.response.data.detail}
         }
     }
 

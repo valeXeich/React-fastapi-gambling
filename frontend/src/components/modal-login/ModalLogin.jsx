@@ -3,6 +3,7 @@ import './ModalLogin.css';
 import { AuthContext } from '../../contex';
 import AuthService from '../../API/AuthService';
 
+
 const ModalLogin = () => {
 
     const {authData, setAuthData} = useContext(AuthContext);
@@ -20,13 +21,13 @@ const ModalLogin = () => {
         username: username,
         password: password
       }
-     const status = await AuthService.login(formData, headers, setAuthData)
+     const response = await AuthService.login(formData, headers, setAuthData)
      setUsername('');
      setPassword('');
-     if (status === 404) {
-      setError('User not found')
-     } else if (status === 400) {
-      setError('Incorrect username or password')
+     if (!response.login) {
+      setError(response.message)
+     } else {
+      document.querySelector('.btn-close').click()
      }
     }
 
@@ -38,6 +39,8 @@ const ModalLogin = () => {
       const response = await AuthService.createAccount(formData)
       if (!response.created) {
         setError(response.message)
+      } else {
+        document.querySelector('.btn-close').click()
       }
       setUsername('');
       setPassword('');
@@ -85,7 +88,7 @@ const ModalLogin = () => {
               </form>
               <div className="row">
                 <div className="col-12">
-                  <button onClick={login} type="button" className="btn btn-outline-success login-btn" data-bs-dismiss="modal" aria-label="Close">Login</button>
+                  <button onClick={login} type="button" className="btn btn-outline-success login-btn" aria-label="Close">Login</button>
                 </div>
               </div>
               <div className="row mt-2">

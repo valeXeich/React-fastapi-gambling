@@ -55,11 +55,6 @@ const Main = () => {
 
     const socket = useRef()
 
-  if (authData.auth) {
-    UserService.getUserBalance(setBalance)
-  }
-
-  console.log(authData)
 
   const setStop = () => {
     setSpin(false)
@@ -69,17 +64,23 @@ const Main = () => {
     setTotalRed(0)
     setTotalGreen(0)
     setTotalBlack(0)
-    changeBalance()
+    if (authData.auth) {
+      changeBalance()
+    }
   }
 
   const filterBets = (color) => {
-    const filteredBets = bets.filter((bet) => {
-      return bet.username === authData.user.username && bet.color === color
-    })
-    const sumOfBets = filteredBets.reduce((a, b) => {
-      return a + b['bet']
-    }, 0)
-    return sumOfBets
+    if (authData.auth) {
+      const filteredBets = bets.filter((bet) => {
+        return bet.username === authData.user.username && bet.color === color
+      })
+      const sumOfBets = filteredBets.reduce((a, b) => {
+        return a + b['bet']
+      }, 0)
+      return sumOfBets
+    } else {
+      return 0
+    }
   }
 
   const changeBalance = () => {
@@ -87,21 +88,27 @@ const Main = () => {
     const myTotalGreen = filterBets('green')
     const myTotalBlack = filterBets('black')
     const victoryColor = data[result].color
-    let totalLost = 0
+    let newBalance = 0
     if (victoryColor === 'red') {
-      setBalance(balance + (myTotalRed * 2))
-      totalLost = myTotalBlack + myTotalGreen
+      newBalance = balance + (myTotalRed * 2)
+      setBalance(newBalance)
     } else if (victoryColor === 'green') {
-      setBalance(balance + (myTotalGreen * 14))
-      totalLost = myTotalRed + myTotalBlack
+      newBalance = balance + (myTotalGreen * 14)
+      setBalance(newBalance)
     } else {
-      setBalance(balance + (myTotalBlack * 2))
-      totalLost = myTotalRed + myTotalGreen
+      newBalance = balance + (myTotalBlack * 2)
+      setBalance(newBalance)
     }
     if (myTotalBlack || myTotalGreen || myTotalRed) {
-      console.log('bet')
+      UserService.changeUserBalance(newBalance)
     }
   }
+
+  useEffect(() => {
+    if (authData.auth) {
+      UserService.getUserBalance(setBalance)
+    }
+  }, [authData])
 
   useEffect(() => {
 
@@ -135,6 +142,7 @@ const Main = () => {
     return () => socket.current.close();
   }, [])
 
+
     return (
         <main className="main mt-3 ms-4 me-5">
             <div className="row">
@@ -142,7 +150,6 @@ const Main = () => {
                     <Chat/>
                 </div>
                 <div className="col-8 roll">
-                    <div className="progress mt-3"></div>
                     <Roulette result={result} data={data} spin={spin} setStop={setStop}/>
                     <Bolls results={results}/>
                     <BetPanel 
@@ -159,9 +166,6 @@ const Main = () => {
                       filterBets={filterBets}
                     />
                     <Bets
-                      totalRed={totalRed}
-                      totalGreen={totalGreen}
-                      totalBlack={totalBlack}
                       bets={bets}
                     />
                 </div>

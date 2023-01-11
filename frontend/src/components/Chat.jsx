@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { useState, useEffect, useContext } from "react";
+import ChatService from "../API/ChatService";
 import { AuthContext } from "../contex";
 import '../styles/Chat.css';
 import Message from "./UI/message/Message";
@@ -13,6 +14,10 @@ const Chat = () => {
   const socket = useRef();
 
   const [chatError, setChatError] = useState('');
+
+  useEffect(() => {
+    ChatService.getMessages(setMessages)
+  }, [])
 
   useEffect(() => {
 
@@ -45,7 +50,7 @@ const Chat = () => {
     if (authData.auth) {
       const message = {
         username: authData.user.username,
-        text: chat
+        message: chat
       }
       socket.current.send(JSON.stringify(message));
       setChat('');

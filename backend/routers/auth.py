@@ -12,9 +12,9 @@ router = APIRouter()
 async def login(request: OAuth2PasswordRequestForm = Depends(), session: AsyncSession = Depends(get_session)):
     user = await get_user(request.username, session)
     if not user:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, detail='Not found')
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail='User not found')
     if not verify(user.password, request.password):
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, detail='invalid password')
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, detail='Incorrect username or password')
     access_token = create_access_token(
         data={'sub': user.username}
     )

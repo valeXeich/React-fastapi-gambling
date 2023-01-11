@@ -30,6 +30,18 @@ const BetPanel = ({
       console.log('Connect Bet')
     }
 
+    socket.current.onmessage = (event) => {
+      const message = JSON.parse(event.data)
+      setBets((prev) => [message, ...prev])
+      if (message.color === 'red') {
+        setTotalRed(totalRed + message.bet)
+      } else if (message.color === 'green') {
+        setTotalGreen(totalGreen + message.bet)
+      } else {
+        setTotalBlack(totalBlack + message.bet)
+      }
+    }
+
     socket.current.onclose = () => {
       console.log('Bet socket closed')
     }
@@ -51,20 +63,12 @@ const BetPanel = ({
         color: e.target.dataset.color
       }
       socket.current.send(JSON.stringify(message))
-      socket.current.onmessage = (event) => {
-        const message = JSON.parse(event.data)
-        setBets((prev) => [message, ...prev])
-        if (message.color === 'red') {
-          setTotalRed(totalRed + message.bet)
-        } else if (message.color === 'green') {
-          setTotalGreen(totalGreen + message.bet)
-        } else {
-          setTotalBlack(totalBlack + message.bet)
-        }
-
-        console.log(message)
-      }
       setBet('')
+    } else {
+      document.getElementById('bet').style.border = "1px solid #d4594c"
+      setInterval(() => {
+        document.getElementById('bet').style.border = "none"
+      }, 1000)
     }
   }
 
@@ -73,6 +77,7 @@ const BetPanel = ({
       <div className="bets d-flex">
         <div className="balance name-color p-3 mt-3 mb-3">Balance: {balance}$</div>
         <input
+          id="bet"
           type="text"
           placeholder="YOUR BET..."
           className="form-control ms-3 mt-3 shadow-none form-bet"

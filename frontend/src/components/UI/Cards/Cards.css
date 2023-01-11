@@ -1,0 +1,13 @@
+.card {
+    width: 250px;
+    height: 150px;
+    background-color: #222225;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.card-img {
+    width: 60%;
+    height: 90%;
+    margin: auto;
+}

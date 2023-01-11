@@ -16,7 +16,7 @@ const RightPanel = () => {
         <div>
             <img src={`${process.env.PUBLIC_URL}/avatar.jpg`} width="45" height="45" alt="" className="img-fluid rounded-circle"/>
             <span className='text-white ms-2'>{authData.user.username}</span>
-            <button onClick={logout} className="btn btn-outline-danger text-uppercase">logout</button>
+            <button onClick={logout} className="btn btn-outline-danger text-uppercase ms-2">logout</button>
         </div>
     );
 };

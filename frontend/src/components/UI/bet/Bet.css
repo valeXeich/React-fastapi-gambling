@@ -1,12 +1,26 @@
 .all-bets {
     width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
     background-color: #1b1b1e;
     border-radius: 8px;
 }
 
+.total-text {
+    color: #828283;
+}
+
+.number-total {
+    color: #DBDBE7;
+}
+
+.total-people {
+    color: #B6B6C0;
+}
+
 .line {
     margin: 5px auto;
-    background-color: #424d4f;
+    background-color: #2A2A2F;
     height: 1px;
     width: 90%;
 }
