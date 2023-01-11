@@ -2,7 +2,7 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends
 from starlette.websockets import WebSocketState
 from service.messages import create_message
 from service.users import get_user
-from service.roulette import check_seeds
+from service.roulette import check_seeds, save_result
 from sqlalchemy.ext.asyncio import AsyncSession
 from database import get_session
 from datetime import datetime
@@ -45,6 +45,7 @@ async def websocket_endpoint(websocket: WebSocket, session: AsyncSession = Depen
                 await asyncio.sleep(25)
                 round_ += 1
                 result = await roulette_manager.get_result(round_, session)
+                await save_result(round_, result, session)
                 print(result)
                 print(round_)
                 await roulette_manager.broadcast(json.dumps({'result': result}))
