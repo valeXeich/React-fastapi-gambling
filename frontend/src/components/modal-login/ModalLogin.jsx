@@ -55,21 +55,7 @@ const ModalLogin = () => {
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
-              <div className="row">
-                <div className="col-12">
-                  <a href="#" className="steam_login text-uppercase">Sign in through steam</a>
-                </div>
-              </div>
               <div className="row mt-3">
-                <div className="col-5">
-                  <hr/>
-                </div>
-                <div className="col-2">
-                  <span className="ms-3 mt-2">OR</span>
-                </div>
-                <div className="col-5">
-                  <hr/>
-                </div>
                 {error
                   ? <p className='text-danger'>{error}</p>
                   : null

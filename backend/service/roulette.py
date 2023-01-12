@@ -34,18 +34,25 @@ async def check_seeds(session: AsyncSession):
 
 
 async def get_round(session: AsyncSession):
-    query = select(Result)
+    query = select(Result).order_by(Result.id.desc()).limit(1)
     execute = await session.execute(query)
-    # print(execute.scalars.all(), 'round')
+    try:
+        round_ = execute.fetchone()[0].round
+    except IndexError:
+        return
+    return round_
 
+
+async def get_last_results(session: AsyncSession):
+     query = select([Result]).order_by(Result.id.desc()).limit(5)
+     result = await session.execute(query)
+     last_10_results = result.fetchall()
+     if not len(last_10_results):
+        return []
+     last_10_results = [{"number": result[0].number} for result in last_10_results]
+     return last_10_results[::-1]
 
 async def save_result(round: int, number: int, session: AsyncSession):
     res = Result(round=round, number=number)
     session.add(res)
-    await get_round(session)
     await session.commit()
-
-
-async def get_last_results(session: AsyncSession):
-    ...
-    

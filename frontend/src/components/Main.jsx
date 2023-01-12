@@ -10,6 +10,7 @@ import '../styles/Main.css';
 import Bets from './Bets';
 import { AuthContext } from '../contex';
 import UserService from '../API/UserService';
+import RouletteService from '../API/RouletteService';
 
 
 
@@ -108,6 +109,7 @@ const Main = () => {
     if (authData.auth) {
       UserService.getUserBalance(setBalance)
     }
+    const response = RouletteService.get_results(data, setResults);
   }, [authData])
 
   useEffect(() => {

@@ -2,7 +2,7 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends
 from starlette.websockets import WebSocketState
 from service.messages import create_message
 from service.users import get_user
-from service.roulette import check_seeds, save_result
+from service.roulette import check_seeds, save_result, get_round
 from sqlalchemy.ext.asyncio import AsyncSession
 from database import get_session
 from datetime import datetime
@@ -37,7 +37,8 @@ async def websocket_endpoint_chat(websocket: WebSocket, session: AsyncSession = 
 @router.websocket('/roll')
 async def websocket_endpoint(websocket: WebSocket, session: AsyncSession = Depends(get_session)):
     tasks = []
-    round_ = 1
+    last_round = await get_round(session)
+    round_ = last_round if last_round else 0
     
     async def send_result():
         nonlocal round_
